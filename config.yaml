@@ -1,0 +1,29 @@
+# Configuración para conversión NetCDF → CPT (IRI)
+
+input:
+  # Archivo mensual (requerido)
+  monthly: "input/monthly/HG500_jun_1961_2025.nc"
+  # Archivo horario (opcional). Si se provee, se promedia a mensual y se concatena.
+  hourly: "input/hourly/HG500_jun_2026.nc"
+
+variable:
+  # Nombre de la variable dentro del NetCDF
+  name: "z"
+  # Nivel de presión a extraer en mb. null si el NetCDF no tiene esa dimensión.
+  pressure_level: 500.0
+
+grid:
+  # Resolución de salida en grados
+  resolution: 2.5
+  # Bounding box de salida. null en cualquier campo usa el extremo del input.
+  bbox:
+    lat_min: null
+    lat_max: null
+    lon_min: null
+    lon_max: null
+
+output:
+  # Directorio de salida
+  dir: "output"
+  # Nombre del archivo. null genera un nombre automático desde el input.
+  filename: null

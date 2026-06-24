@@ -216,3 +216,12 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+.Rproj.user
+
+## R
+*.Rproj
+
+## Datos
+*.nc
+input/**/*.csv
+output/*.csv
