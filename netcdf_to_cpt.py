@@ -33,7 +33,7 @@ UNIT_CONVERSION = {
 }
 
 
-def load_config(path):
+def load_config(path="config_convert.yaml"):
     with open(path) as f:
         return yaml.safe_load(f)
 
@@ -178,5 +178,5 @@ def main(config_path="config.yaml"):
 
 
 if __name__ == "__main__":
-    config_path = sys.argv[1] if len(sys.argv) > 1 else "config.yaml"
+    config_path = sys.argv[1] if len(sys.argv) > 1 else "config_convert.yaml"
     main(config_path)

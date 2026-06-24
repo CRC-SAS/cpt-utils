@@ -1,0 +1,37 @@
+# Configuración para descarga de datos ERA5 desde Copernicus CDS
+# Requiere cuenta en https://cds.climate.copernicus.eu
+# IMPORTANTE: no commitear este archivo al repositorio (está en .gitignore)
+
+credentials:
+  url: "https://cds.climate.copernicus.eu/api"
+  key: ""  # pegar aquí la API key del perfil de usuario en CDS
+
+dataset:
+  # Variables disponibles en reanalysis-era5-pressure-levels:
+  #   geopotential
+  #   temperature
+  #   u_component_of_wind
+  #   v_component_of_wind
+  #   specific_humidity
+  #   relative_humidity
+  #   vertical_velocity
+  #   vorticity
+  #   divergence
+  #   potential_vorticity
+  #   ozone_mass_mixing_ratio
+  variable: "geopotential"
+  pressure_level: "500"
+
+monthly:
+  year_start: 1961
+  year_end: 2025
+  month: "06"
+  output: "input/monthly/HG500_jun_1961_2025.nc"
+
+hourly:
+  year: "2026"
+  month: "06"
+  day_start: 1
+  day_end: 18   # último día disponible en CDS
+  times: ["00:00", "06:00", "12:00", "18:00"]
+  output: "input/hourly/HG500_jun_2026.nc"

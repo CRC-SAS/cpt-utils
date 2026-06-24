@@ -1,3 +1,4 @@
+cdsapi
 xarray
 netCDF4
 numpy

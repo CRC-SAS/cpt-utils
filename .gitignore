@@ -221,6 +221,10 @@ __marimo__/
 ## R
 *.Rproj
 
+## Configuraciones locales (usar los .example como plantilla)
+config_download.yaml
+config_convert.yaml
+
 ## Datos
 *.nc
 input/**/*.csv
