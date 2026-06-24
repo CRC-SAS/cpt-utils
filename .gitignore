@@ -222,8 +222,7 @@ __marimo__/
 *.Rproj
 
 ## Configuraciones locales (usar los .example como plantilla)
-config_download*.yaml
-config_convert*.yaml
+*.yaml
 
 ## Datos
 *.nc
