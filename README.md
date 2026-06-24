@@ -90,7 +90,7 @@ Los archivos se guardan en las rutas definidas en `config_download.yaml` (por de
 
 ## Configuración
 
-Copiar `config_convert.yaml.example` a `config_convert.yaml` y editar según necesidad:
+Copiar `config_convert.yaml.example` a `config_convert_<CASO>.yaml` y editar según necesidad:
 
 ```yaml
 input:
@@ -130,12 +130,25 @@ O especificando un config alternativo:
 
 **Linux / macOS**
 ```bash
-.venv/bin/python3 netcdf_to_cpt.py otro_config_convert.yaml
+.venv/bin/python3 netcdf_to_cpt.py config_convert_U250.yaml
 ```
 
 **Windows**
 ```bat
-.venv\Scripts\python netcdf_to_cpt.py otro_config_convert.yaml
+.venv\Scripts\python netcdf_to_cpt.py config_convert_U250.yaml
 ```
 
 El archivo de salida se escribe en el directorio `output/`.
+
+## Ejemplos de uso
+
+Casos probados con datos de junio 1961–2026 (mensual 1961–2025 + horario 2026, promediado), resolución global de 2.5°.
+
+| Variable ERA5 | Nivel | Var. NetCDF | Unidades | Archivo de salida | Min | Max | Media |
+|---|---|---|---|---|---|---|---|
+| Geopotential | 500 hPa | `z` | gpm | `HG500_jun_1961_2026.csv` | 4733.23 | 5947.72 | 5548.67 |
+| U-component of wind | 250 hPa | `u` | m/s | `U250_jun_1961_2026.csv` | -20.09 | 67.47 | 11.96 |
+| V-component of wind | 850 hPa | `v` | m/s | `V850_jun_1961_2026.csv` | -14.64 | 21.45 | 0.33 |
+| Vertical velocity | 700 hPa | `w` | Pa/s | `W700_jun_1961_2026.csv` | -1.43 | 2.11 | 0.003 |
+
+Los configs usados para cada caso están en los archivos `config_download_<CASO>.yaml` y `config_convert_<CASO>.yaml`.
