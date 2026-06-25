@@ -108,6 +108,21 @@ def regrid(da, resolution):
     return da.interp(latitude=lat_out, longitude=lon_out, method="linear")
 
 
+def value_format(da):
+    """Determina el formato numérico según el rango de los datos."""
+    finite = da.values[np.isfinite(da.values)]
+    finite = finite[finite != MISSING]
+    if len(finite) == 0:
+        return "{:12.2f}"
+    max_abs = float(np.abs(finite).max())
+    if max_abs >= 100:
+        return "{:12.2f}"
+    elif max_abs >= 1:
+        return "{:12.4f}"
+    else:
+        return "{:12.6f}"
+
+
 def write_cpt(da, output_path, cfg, cpt_units):
     plevel   = cfg["variable"]["pressure_level"] or 0.0
     var_name = cfg["variable"]["name"]
@@ -116,6 +131,7 @@ def write_cpt(da, output_path, cfg, cpt_units):
     lons     = da["longitude"].values
     nrow, ncol = len(lats), len(lons)
     time_strs = [np.datetime_as_string(t, unit="M") for t in times]
+    fmt = value_format(da)
 
     with open(output_path, "w") as f:
         f.write("xmlns:cpt=http://iri.columbia.edu/CPT/v10/\n")
@@ -132,7 +148,7 @@ def write_cpt(da, output_path, cfg, cpt_units):
 
             data = da.isel(time=i).values
             for lat, row in zip(lats, data):
-                f.write(f"{lat:.1f}\t" + "\t".join(f"{v:12.2f}" for v in row) + "\n")
+                f.write(f"{lat:.1f}\t" + "\t".join(fmt.format(v) for v in row) + "\n")
 
 
 def build_output_path(cfg, da=None):
