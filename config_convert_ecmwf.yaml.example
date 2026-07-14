@@ -1,0 +1,30 @@
+# Configuración para conversión NetCDF (pronóstico estacional ECMWF) → CPT (IRI)
+
+input:
+  # Archivo estacional (requerido). Dims esperadas: number, forecast_reference_time,
+  # forecastMonth, latitude, longitude
+  seasonal: "input/seasonal/T2M_jun_1981_2026.nc"
+
+variable:
+  # Nombre de la variable dentro del NetCDF (según cfgrib, no el nombre pedido a CDS):
+  #   2m_temperature      -> "t2m"
+  #   total_precipitation -> "tprate" (viene en m/s, se convierte a mm/día)
+  name: "t2m"
+  # Las variables de seasonal-monthly-single-levels no tienen nivel de presión.
+  pressure_level: null
+
+grid:
+  # Resolución de salida en grados
+  resolution: 2.5
+  # Bounding box de salida. null en cualquier campo usa el extremo del input.
+  bbox:
+    lat_min: null
+    lat_max: null
+    lon_min: null
+    lon_max: null
+
+output:
+  # Directorio de salida
+  dir: "output"
+  # Nombre del archivo. null genera un nombre automático desde el input.
+  filename: null

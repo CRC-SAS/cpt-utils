@@ -1,0 +1,27 @@
+# Configuración para descarga de pronóstico estacional ECMWF (SEAS5) desde Copernicus CDS
+# Requiere cuenta en https://cds.climate.copernicus.eu y haber aceptado los términos
+# del dataset "seasonal-monthly-single-levels" desde el portal web.
+# IMPORTANTE: no commitear este archivo al repositorio (está en .gitignore)
+
+credentials:
+  url: "https://cds.climate.copernicus.eu/api"
+  key: ""  # pegar aquí la API key del perfil de usuario en CDS
+
+dataset:
+  # Variables disponibles en seasonal-monthly-single-levels (ver portal CDS para el listado completo):
+  #   2m_temperature
+  #   total_precipitation
+  variable: "2m_temperature"
+  originating_centre: "ecmwf"
+  system: "51"
+  product_type: "monthly_mean"  # media temporal del mes, por miembro (no promedio de miembros)
+
+seasonal:
+  years: [1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990,
+          1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000,
+          2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010,
+          2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020,
+          2021, 2022, 2023, 2024, 2025, 2026]
+  month: "06"
+  leadtime_months: [1, 2, 3]
+  output: "input/seasonal/T2M_jun_1981_2026.nc"

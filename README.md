@@ -152,3 +152,46 @@ Casos probados con datos de junio 1961–2026 (mensual 1961–2025 + horario 202
 | Vertical velocity | 700 hPa | `w` | Pa/s | `W700_jun_1961_2026.csv` | -1.43 | 2.11 | 0.003 |
 
 Los configs usados para cada caso están en los archivos `config_download_<CASO>.yaml` y `config_convert_<CASO>.yaml`.
+
+## Pronóstico estacional ECMWF (SEAS5)
+
+Además del reanálisis ERA5, el repositorio incluye un pipeline separado para convertir
+pronóstico estacional ECMWF (SEAS5, dataset `seasonal-monthly-single-levels`) al formato CPT.
+
+### Descarga
+
+Copiar `config_download_ecmwf.yaml.example` a `config_download_<CASO>.yaml` (por ejemplo
+`config_download_T2M.yaml`) y completar credenciales y variable. Requiere haber aceptado los
+términos del dataset `seasonal-monthly-single-levels` desde el portal de CDS.
+
+**Linux / macOS**
+```bash
+.venv/bin/python3 download_ecmwf.py config_download_T2M.yaml
+```
+
+Descarga todos los miembros de ensamble y los leadtime_month definidos para cada año, en un
+único NetCDF (ver `input/seasonal/README.md`).
+
+### Conversión
+
+Copiar `config_convert_ecmwf.yaml.example` a `config_convert_<CASO>.yaml` y ejecutar:
+
+**Linux / macOS**
+```bash
+.venv/bin/python3 ecmwf_to_cpt.py config_convert_T2M.yaml
+```
+
+El script:
+- Promedia los miembros de ensamble (ignorando NaN, ya que los años hindcast tienen menos miembros que los operativos)
+- Si la variable es `tprate` (precipitación, en m/s), convierte a mm/día
+- Promedia los `leadtime_month` (ej. leadtime 1-3 desde junio = jun-jul-ago)
+- Reutiliza rotación de longitudes, bounding box, regrillado y escritura CPT de `netcdf_to_cpt.py`
+
+### Ejemplos de uso
+
+Casos probados con pronóstico estacional inicializado en junio 1981–2026, leadtime 1-3, resolución global de 2.5°.
+
+| Variable ECMWF | Var. NetCDF | Unidades | Archivo de salida | Min | Max | Media |
+|---|---|---|---|---|---|---|
+| 2m Temperature | `t2m` | K | `T2M_jun_1981_2026.csv` | 211.23 | 313.20 | 281.10 |
+| Total precipitation | `tprate` | mm/día | `TP_jun_1981_2026.csv` | 0.00 | 32.20 | 2.55 |
