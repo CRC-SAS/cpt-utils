@@ -1,10 +1,15 @@
 # cpt-utils
 
-Utilidad para convertir archivos NetCDF de reanálisis ERA5 al formato CPT (IRI Climate Predictability Tool).
+Utilidad para convertir archivos NetCDF de reanálisis ERA5 y de pronóstico estacional ECMWF (SEAS5) al formato CPT (IRI Climate Predictability Tool).
 
-## ¿Qué hace?
+Incluye dos pipelines independientes:
 
-A partir de uno o dos archivos NetCDF (datos mensuales y/o sub-diarios), genera un archivo CSV en el formato que acepta CPT:
+- `era5_to_cpt.py`: reanálisis ERA5 (mensual y/o sub-diario)
+- `ecmwf_to_cpt.py`: pronóstico estacional ECMWF SEAS5 (ver [sección dedicada](#pronóstico-estacional-ecmwf-seas5))
+
+## ¿Qué hace `era5_to_cpt.py`?
+
+A partir de uno o dos archivos NetCDF de ERA5 (datos mensuales y/o sub-diarios), genera un archivo CSV en el formato que acepta CPT:
 
 - Convierte geopotencial (m² s⁻²) a altura geopotencial (gpm)
 - Rota las longitudes de 0–360° a −180–180°
@@ -118,24 +123,24 @@ output:
 
 **Linux / macOS**
 ```bash
-.venv/bin/python3 netcdf_to_cpt.py
+.venv/bin/python3 era5_to_cpt.py
 ```
 
 **Windows**
 ```bat
-.venv\Scripts\python netcdf_to_cpt.py
+.venv\Scripts\python era5_to_cpt.py
 ```
 
 O especificando un config alternativo:
 
 **Linux / macOS**
 ```bash
-.venv/bin/python3 netcdf_to_cpt.py config_convert_U250.yaml
+.venv/bin/python3 era5_to_cpt.py config_convert_U250.yaml
 ```
 
 **Windows**
 ```bat
-.venv\Scripts\python netcdf_to_cpt.py config_convert_U250.yaml
+.venv\Scripts\python era5_to_cpt.py config_convert_U250.yaml
 ```
 
 El archivo de salida se escribe en el directorio `output/`.
@@ -185,7 +190,7 @@ El script:
 - Promedia los miembros de ensamble (ignorando NaN, ya que los años hindcast tienen menos miembros que los operativos)
 - Si la variable es `tprate` (precipitación, en m/s), convierte a mm/día
 - Promedia los `leadtime_month` (ej. leadtime 1-3 desde junio = jun-jul-ago)
-- Reutiliza rotación de longitudes, bounding box, regrillado y escritura CPT de `netcdf_to_cpt.py`
+- Reutiliza la carga de config y el bounding box de `era5_to_cpt.py`; la rotación de longitudes, el regrillado (a una malla alineada a los polos/bordes) y el formato CPT de salida (nombre de campo, metadatos de lead/temporada, precisión numérica) son propios de este pipeline
 
 ### Ejemplos de uso
 

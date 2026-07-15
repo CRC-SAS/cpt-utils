@@ -11,7 +11,7 @@ Pipeline:
   7. Escribe el archivo CPT (TSV con cabeceras específicas)
 
 Uso:
-  python netcdf_to_cpt.py [config_convert.yaml]
+  python era5_to_cpt.py [config_convert.yaml]
 """
 
 import sys

@@ -11,7 +11,7 @@ Pipeline:
   5. Promedia sobre los leadtime_month (mismo peso para cada uno)
   6. Regrilla a una malla alineada a los polos/bordes (90 a -90, -180 a 180), extrapolando
      en latitud e interpolando "envolviendo" el dateline en longitud
-  7. Reutiliza bbox y carga de config de netcdf_to_cpt.py; formato CPT propio (G13.6)
+  7. Reutiliza bbox y carga de config de era5_to_cpt.py; formato CPT propio (G13.6)
 
 Uso:
   python ecmwf_to_cpt.py [config_convert.yaml]
@@ -21,7 +21,7 @@ import sys
 import numpy as np
 import xarray as xr
 
-from netcdf_to_cpt import (
+from era5_to_cpt import (
     MISSING, MONTH_ABBR, load_config, normalize_dims, detect_conversion,
     apply_bbox,
 )
@@ -33,7 +33,7 @@ MM_PER_DAY_FACTOR = 1000.0 * 86400.0  # m/s -> mm/día
 
 # Nombre de campo CPT y standard_name CF por variable, validado contra el formato
 # de referencia de la experta (ECMWF_PP_original.csv). Solo se usa en este pipeline
-# (SEAS5); netcdf_to_cpt.py / ERA5 no se toca.
+# (SEAS5); era5_to_cpt.py / ERA5 no se toca.
 FIELD_INFO = {
     "tprate": ("prcp", "lwe_precipitation_rate"),
     "t2m":    ("temp", "air_temperature"),
@@ -111,7 +111,7 @@ def lon_0360_to_180(da):
 def regrid_edge_aligned(da, resolution, bbox=None):
     """Regrilla a una malla alineada a los bordes/polos (90 a -90, -180 a 180 por
     defecto), en vez de anclar la malla a los extremos de celda de la grilla nativa
-    de SEAS5 (89.5, -89.5, ... — la que produce netcdf_to_cpt.regrid()). La experta
+    de SEAS5 (89.5, -89.5, ... — la que produce era5_to_cpt.regrid()). La experta
     descarga con la convención de bordes exactos y la usa como referencia.
 
     Como el dato nativo no llega exactamente a los polos, se extrapola linealmente
