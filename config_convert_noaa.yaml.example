@@ -1,0 +1,36 @@
+# Configuración para conversión NetCDF (SST: NOAA ERSST v5 + OISST v2.1) → CPT (IRI)
+
+input:
+  # Directorio con un archivo ersst.v5.<año><mes>.nc por año (ver download_noaa.py)
+  ersst_dir: "input/sst/ersst"
+  # Serie mensual completa OISST (1981-09 en adelante)
+  oisst_monthly: "input/sst/sst.mon.mean.nc"
+  # Diario del año en curso. Opcional: solo se usa si el mes objetivo de ese año
+  # todavía no está completo en oisst_monthly.
+  oisst_daily: "input/sst/sst.day.mean.2026.nc"
+
+variable:
+  name: "sst"
+
+period:
+  year_start: 1961
+  year_end: 2026
+  # Mes objetivo (MM), igual para todos los años
+  month: "07"
+  # Años <= este usan ERSST; el resto usa OISST (mensual o, si el mes objetivo está
+  # incompleto, el promedio de los diarios disponibles)
+  ersst_last_year: 1981
+
+grid:
+  # Resolución de salida en grados
+  resolution: 1.0
+  # Bounding box de salida. null en cualquier campo usa el extremo global (90/-90/-180/180).
+  bbox:
+    lat_min: null
+    lat_max: null
+    lon_min: null
+    lon_max: null
+
+output:
+  dir: "output"
+  filename: null  # null = nombre automático (ej. SST_jul_1961_2026.csv)

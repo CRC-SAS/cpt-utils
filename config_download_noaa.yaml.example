@@ -1,0 +1,23 @@
+# Configuración para descarga de datos SST (NOAA ERSST v5 + OISST v2.1)
+# Fuentes públicas, no requieren autenticación ni cuenta.
+
+dataset:
+  # Mes objetivo (MM), igual para todos los años de la serie
+  month: "07"
+  # Último año cubierto por ERSST; el resto de la serie usa OISST (ver README)
+  ersst_last_year: 1981
+
+ersst:
+  year_start: 1961
+  year_end: 1981
+  # Directorio de salida: se guarda un archivo ersst.v5.<año><mes>.nc por año
+  output_dir: "input/sst/ersst"
+
+oisst_monthly:
+  # Serie completa (1981-09 en adelante), se descarga una sola vez (~2.2 GB)
+  output: "input/sst/sst.mon.mean.nc"
+
+oisst_daily:
+  # Solo hace falta si el mes objetivo cae en el año en curso y todavía no cerró
+  year: 2026
+  output: "input/sst/sst.day.mean.2026.nc"

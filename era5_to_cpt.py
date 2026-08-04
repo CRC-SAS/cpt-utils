@@ -12,6 +12,8 @@ Pipeline:
 
 Uso:
   python era5_to_cpt.py [config_convert.yaml]
+
+  Sin argumento, usa config_convert_HG500.yaml por defecto.
 """
 
 import sys
