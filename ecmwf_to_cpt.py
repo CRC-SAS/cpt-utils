@@ -161,9 +161,15 @@ def seasonal_time_metadata(da):
         start_num = init_month + fm_min
         end_num   = init_month + fm_max
         start_year, start_month = init_year + (start_num - 1) // 12, (start_num - 1) % 12 + 1
-        end_month = (end_num - 1) % 12 + 1
-        label = (f"{start_year}-{start_month:02d}" if start_month == end_month
-                 else f"{start_year}-{start_month:02d}/{end_month:02d}")
+        end_year, end_month = init_year + (end_num - 1) // 12, (end_num - 1) % 12 + 1
+        # Si la temporada cruza de año (ej. NDJ) el año de fin va explícito
+        # (1981-11/1982-01); si no, CPT leería 1981-11/01 como nov-1981 a ene-1981.
+        if start_month == end_month and start_year == end_year:
+            label = f"{start_year}-{start_month:02d}"
+        elif start_year == end_year:
+            label = f"{start_year}-{start_month:02d}/{end_month:02d}"
+        else:
+            label = f"{start_year}-{start_month:02d}/{end_year}-{end_month:02d}"
         target_labels.append(label)
         lead_months.append(lead)
         start_dates.append(f"{init_year:04d}-{init_month:02d}-01T00:00")
